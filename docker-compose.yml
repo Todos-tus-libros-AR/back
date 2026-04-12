@@ -1,0 +1,38 @@
+services:
+  db:
+    image: postgres:latest
+    restart: always
+    env_file: .env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  back:
+    build:
+      context: ./todosar
+      dockerfile: Dockerfile
+    command: sleep infinity #python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./todosar:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    env_file:
+      - .env
+
+
+  # celery:  back:
+    # build:
+    #   context: ./todosar
+    #   dockerfile: Dockerfile
+  #   build: .
+  #   command: celery -A django_app worker --loglevel=info
+  #   volumes:
+  #     - .:/app
+  #   depends_on:
+  #     - db
+
+volumes:
+  postgres_data:

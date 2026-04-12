@@ -1,0 +1,62 @@
+[build-system]
+requires = ["setuptools>=65.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "todosar"
+version = "0.1.0"
+description = "Todo application"
+readme = "README.md"
+requires-python = ">=3.12"
+authors = [
+    {name = "David Moscoso", email = "dfmoscoso23@gmail.com"}
+]
+
+dependencies = [
+    "django==5.2.13",
+    "djangorestframework==3.17.1",
+    "psycopg2-binary==2.9.11",
+    "pydantic==2.12.5",
+
+
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff==0.15.10",
+]
+
+[tool.ruff]
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".ipynb_checkpoints",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pyenv",
+    ".pytest_cache",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    ".vscode",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "site-packages",
+    "venv",
+]
+line-length = 88
+indent-width = 4
+target-version = "py312"
+
+
