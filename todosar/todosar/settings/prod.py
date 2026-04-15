@@ -12,4 +12,6 @@ DATABASES = {
     }
 }
 
+DEBUG = False
+
 ALLOWED_HOSTS = ["api.todostuslibrosar.com.ar", "localhost", "127.0.0.1"]
