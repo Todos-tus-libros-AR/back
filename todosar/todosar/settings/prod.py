@@ -12,6 +12,10 @@ DATABASES = {
     }
 }
 
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["api.todostuslibrosar.com.ar", "localhost", "127.0.0.1"]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://api.todostuslibrosar.com.ar",
+]
