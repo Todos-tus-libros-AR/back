@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login
+from drf_spectacular.utils import extend_schema
 from rest_framework.decorators import APIView, api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -25,6 +26,10 @@ def api_login(request):
     return Response({"detail": "Login successful"})
 
 
+@extend_schema(
+    request=UserCreationSerializer,
+    responses={201: UserCreationSerializer},
+)
 class UserAccessAPIView(APIView):
     permission_classes = [AllowAny]
 
@@ -39,6 +44,10 @@ class UserAccessAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@extend_schema(
+    request=UserSerializer,
+    responses={200: UserSerializer},
+)
 class UserMeAPIView(APIView):
     def get(self, request):
         user = request.user

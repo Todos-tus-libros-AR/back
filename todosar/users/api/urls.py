@@ -10,7 +10,9 @@ urlpatterns = [
     path("user/me/", UserMeAPIView.as_view(), name="user-me"),
     path(
         "user/address/",
-        UserAddressAPIView.as_view({"get": "list", "post": "create"}),
+        UserAddressAPIView.as_view(
+            {"get": "list", "post": "create", "put": "update", "delete": "destroy"}
+        ),
         name="user-addresses",
     ),
 ]
