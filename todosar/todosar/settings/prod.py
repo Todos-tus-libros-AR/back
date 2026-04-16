@@ -19,3 +19,9 @@ ALLOWED_HOSTS = ["api.todostuslibrosar.com.ar", "localhost", "127.0.0.1"]
 CSRF_TRUSTED_ORIGINS = [
     "https://api.todostuslibrosar.com.ar",
 ]
+
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOWED_ORIGINS = [
+    "https://todos.apiultragestion.com.ar",
+]

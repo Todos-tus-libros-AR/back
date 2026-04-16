@@ -11,3 +11,6 @@ DATABASES = {
         "PORT": os.getenv("DATABASE_PORT"),
     }
 }
+
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_ALL_ORIGINS = True
