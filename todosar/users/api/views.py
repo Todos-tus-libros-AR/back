@@ -5,6 +5,8 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework import status, viewsets
 
+from utils.email import Emailing
+
 from ..models import UserAddress
 
 from .serializers import UserAddressSerializer, UserCreationSerializer, UserSerializer
@@ -37,6 +39,8 @@ class UserAccessAPIView(APIView):
         serializer = UserCreationSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
+            emailing = Emailing()
+            emailing.send_bienvenida(user.email)
             return Response(
                 {"detail": "User created successfully", "user": user.id},
                 status=status.HTTP_201_CREATED,
