@@ -2,26 +2,31 @@ from django.db import models
 from django_extensions.db.models import TimeStampedModel
 from django.conf import settings
 from django.core.exceptions import ValidationError
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 from .utils import generate_code
+from .choices import DiscountType
 
 
 class Order(TimeStampedModel):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="orders"
     )
-    library = models.CharField(max_length=50)
-    # el número de orden será el id de la orden, a menos que se quiera un formato específico.
+    book_store_id = models.IntegerField()
+    total = models.DecimalField(max_digits=12, decimal_places=2)
 
 
 class OrderItem(TimeStampedModel):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="items")
     ean = models.CharField(max_length=13)
-    amount = models.IntegerField()
+    quantity = models.IntegerField(validators=[MinValueValidator(1)])
+    unit_price = models.DecimalField(
+        max_digits=10, decimal_places=2, validators=[MinValueValidator(0.01)]
+    )
 
 
 class Discount(TimeStampedModel):
-    code = models.CharField(max_length=8, unique=True, blank=True)
+    code = models.CharField(max_length=15, unique=True, blank=True)
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
@@ -30,15 +35,15 @@ class Discount(TimeStampedModel):
         related_name="discounts",
     )
 
-    class DiscountType(models.TextChoices):
-        FIXED = "fixed"
-        PERCENTAGE = "percentage"
-
     type = models.CharField(choices=DiscountType.choices, max_length=10)
-    percentage = models.IntegerField(null=True, blank=True)
-    fixed = models.IntegerField(null=True, blank=True)
-    exp = models.DateTimeField(null=True, blank=True)
-    max_uses = models.IntegerField(default=1)
+    percentage = models.IntegerField(
+        null=True, blank=True, validators=[MinValueValidator(1), MaxValueValidator(100)]
+    )
+    fixed = models.IntegerField(
+        null=True, blank=True, validators=[MinValueValidator(1)]
+    )
+    expiration = models.DateTimeField(null=True, blank=True)
+    max_uses = models.IntegerField(default=1, validators=[MinValueValidator(1)])
     current_uses = models.IntegerField(default=0)
 
     def clean(self):

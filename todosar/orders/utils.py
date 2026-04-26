@@ -7,7 +7,7 @@ def generate_code():
 
     while True:
         code = "".join(
-            secrets.choice(string.ascii_uppercase + string.digits) for _ in range(8)
+            secrets.choice(string.ascii_uppercase + string.digits) for _ in range(15)
         )
         if not Discount.objects.filter(code=code).exists():
             return code
