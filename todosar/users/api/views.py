@@ -4,12 +4,15 @@ from rest_framework.decorators import APIView, api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework import status, viewsets
+from utils.models import GeneralConfiguration
 
 from utils.email import Emailing
 
 from ..models import UserAddress
 
 from .serializers import UserAddressSerializer, UserCreationSerializer, UserSerializer
+
+general_config = GeneralConfiguration.objects.first()
 
 
 @api_view(["POST"])
@@ -41,6 +44,8 @@ class UserAccessAPIView(APIView):
             user = serializer.save()
             emailing = Emailing()
             emailing.send_bienvenida(user.email)
+            if getattr(general_config, "send_new_users_discount_email", False):
+                emailing.send_discount_for_new_users(user.email, user)
             return Response(
                 {"detail": "User created successfully", "user": user.id},
                 status=status.HTTP_201_CREATED,

@@ -3,7 +3,12 @@ import re
 import requests
 import logging
 from jinja2 import Environment, FileSystemLoader
+from orders.choices import DiscountType
+from orders.models import Discount
+from users.models import User
+from utils.models import GeneralConfiguration
 
+general_config = GeneralConfiguration.objects.first()
 logger = logging.getLogger(__name__)
 
 
@@ -51,3 +56,26 @@ class Emailing:
 
     def _html_to_text(self, html: str) -> str:
         return re.sub(r"<[^>]+>", "", html)
+
+    def send_discount_for_new_users(self, to: str, user: User):
+        subject = "Preparate para el lanzamiento de Todos Tus LibrosAR"
+        discount_percentage = getattr(general_config, "new_users_discount_percentage")
+        fixed_discount_amount = getattr(
+            general_config, "new_users_fixed_discount_amount"
+        )
+        discount = Discount.objects.create(
+            type=DiscountType.FIXED
+            if fixed_discount_amount
+            else DiscountType.PERCENTAGE,
+            percentage=discount_percentage,
+            fixed=fixed_discount_amount,
+            max_uses=1,
+            user=user,
+        )
+        self.send_email(
+            to,
+            subject,
+            "Por haberte suscrito a nuestro sitio  te ofrecemos un descuento exclusivo para tu primera compra. ¡No te lo pierdas! Código: {}".format(
+                discount.code
+            ),
+        )
