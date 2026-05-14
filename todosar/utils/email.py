@@ -8,9 +8,7 @@ from orders.models import Discount
 from users.models import User
 from utils.models import GeneralConfiguration
 
-# general_config = GeneralConfiguration.objects.first()
 logger = logging.getLogger(__name__)
-
 
 class Emailing:
     def __init__(self, from_email: str = None):

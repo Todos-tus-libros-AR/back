@@ -12,9 +12,6 @@ from ..models import UserAddress
 
 from .serializers import UserAddressSerializer, UserCreationSerializer, UserSerializer
 
-#general_config = GeneralConfiguration.objects.first()
-
-
 @api_view(["POST"])
 @permission_classes([AllowAny])
 def api_login(request):
