@@ -8,9 +8,7 @@ from orders.models import Discount
 from users.models import User
 from utils.models import GeneralConfiguration
 
-general_config = GeneralConfiguration.objects.first()
 logger = logging.getLogger(__name__)
-
 
 class Emailing:
     def __init__(self, from_email: str = None):
@@ -59,6 +57,9 @@ class Emailing:
 
     def send_discount_for_new_users(self, to: str, user: User):
         subject = "Preparate para el lanzamiento de Todos Tus LibrosAR"
+        
+        general_config = GeneralConfiguration.load()
+        
         discount_percentage = getattr(general_config, "new_users_discount_percentage")
         fixed_discount_amount = getattr(
             general_config, "new_users_fixed_discount_amount"

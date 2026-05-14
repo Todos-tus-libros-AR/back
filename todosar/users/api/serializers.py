@@ -28,9 +28,9 @@ class UserCreationSerializer(serializers.ModelSerializer):
 
 
 class UserAddressSerializer(serializers.ModelSerializer):
-    city = CitySerializer()
-    state = StateSerializer()
-    country = CountrySerializer()
+    city = CitySerializer(read_only=True)
+    state = StateSerializer(read_only=True)
+    country = CountrySerializer(read_only=True)
 
     class Meta:
         model = UserAddress

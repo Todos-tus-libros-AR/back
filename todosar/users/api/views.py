@@ -12,9 +12,6 @@ from ..models import UserAddress
 
 from .serializers import UserAddressSerializer, UserCreationSerializer, UserSerializer
 
-general_config = GeneralConfiguration.objects.first()
-
-
 @api_view(["POST"])
 @permission_classes([AllowAny])
 def api_login(request):
@@ -43,7 +40,10 @@ class UserAccessAPIView(APIView):
         if serializer.is_valid():
             user = serializer.save()
             emailing = Emailing()
-            emailing.send_bienvenida(user.email)
+            emailing.send_bienvenida(user.email) 
+            
+            general_config = GeneralConfiguration.load()
+            
             if getattr(general_config, "send_new_users_discount_email", False):
                 emailing.send_discount_for_new_users(user.email, user)
             return Response(
