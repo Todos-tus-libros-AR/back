@@ -32,24 +32,40 @@ class UserAddressSerializer(serializers.ModelSerializer):
     state = StateSerializer(read_only=True)
     country = CountrySerializer(read_only=True)
 
+    city_id = serializers.IntegerField(write_only=True)
+    state_id = serializers.IntegerField(write_only=True)
+    country_id = serializers.IntegerField(write_only=True)
+
     class Meta:
         model = UserAddress
         fields = [
+            "id",
             "street",
             "number",
             "door",
             "postal_code",
-            "city",
-            "state",
-            "country",
+            "city",         # Salida
+            "state",        # Salida
+            "country",      # Salida
+            "city_id",      # Entrada
+            "state_id",     # Entrada
+            "country_id",   # Entrada
             "main",
         ]
 
     def create(self, validated_data):
         user = self.context["request"].user
+        
+        if validated_data.get("main", False):
+            UserAddress.objects.filter(user=user, main=True).update(main=False)
+            
         return UserAddress.objects.create(user=user, **validated_data)
 
     def update(self, instance, validated_data):
+        user = self.context["request"].user
+        if validated_data.get("main", False):
+            UserAddress.objects.filter(user=user, main=True).update(main=False)
+
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
         instance.save()

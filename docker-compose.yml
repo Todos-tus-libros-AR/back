@@ -15,8 +15,8 @@ services:
       context: ./todosar
       dockerfile: Dockerfile
     command: python manage.py runserver 0.0.0.0:8000
-    volumes:
-      - ./todosar:/app
+    #volumes:
+    #  - ./todosar:/app
     ports:
       - "8040:8000"
     depends_on:
