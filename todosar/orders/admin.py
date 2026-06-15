@@ -12,6 +12,7 @@ class OrderAdmin(admin.ModelAdmin):
         "status",
         "order_id",
         "order_link",
+        "order_token",
         "created",
     )
 

@@ -13,12 +13,13 @@ class Order(TimeStampedModel):
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="orders"
     )
     book_store = models.CharField(max_length=30)
-    order_link = models.CharField(max_length=200, null=True)
     total_amount = models.DecimalField(max_digits=12, decimal_places=2)
     status = models.CharField(
-        choices=Status.choices, max_length=10, default=Status.CREADO
+        choices=Status.choices, max_length=10, default=Status.CREATED
     )
+    order_link = models.CharField(max_length=200, null=True)
     order_id = models.CharField(max_length=15, null=True, blank=True)
+    order_token = models.CharField(max_length=100, null=True, blank=True)
 
 
 class OrderItem(TimeStampedModel):

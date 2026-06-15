@@ -7,7 +7,8 @@ class DiscountType(models.TextChoices):
 
 
 class Status(models.TextChoices):
-    CREADO = "creado"
-    PAGADO = "pagado"
-    ENVIADO = "enviado"
-    FINALIZADO = "finalizado"
+    CREATED = "created"
+    PAID = "paid"
+    SHIPPED = "shipped"
+    COMPLETED = "completed"
+    CANCELLED = "cancelled"

@@ -5,6 +5,7 @@ from rest_framework import status
 from drf_spectacular.utils import extend_schema
 from django.db.models import Q, F
 from django.utils import timezone
+from django.conf import settings
 import requests
 
 from ..models import Discount
@@ -40,16 +41,14 @@ class OrderCreateView(APIView):
             try:
                 response = requests.post(
                     "https://apiultragestion.com.ar/api/external/generar-orden/",
-                    headers={
-                        "Authorization": "Token a2f8b8e03a87be5a6dcf54ed588b4e04303b70ee"
-                    },
+                    headers={"Authorization": f"Token {settings.API_ULTRA_TOKEN}"},
                     json=payload,
                 )
                 if response.status_code not in [200, 201]:
                     return Response(response.json(), status=status.HTTP_400_BAD_REQUEST)
             except Exception:
                 return Response(
-                    {"error": "No se pudo conectar al sistema externo"},
+                    {"error": "Failed to connect to the external system"},
                     status=status.HTTP_502_BAD_GATEWAY,
                 )
 
@@ -58,6 +57,7 @@ class OrderCreateView(APIView):
                 user=request.user,
                 order_link=external_data.get("order_link"),
                 order_id=str(external_data.get("order_id")),
+                order_token=str(external_data.get("order_token")),
             )
             return Response(OrderSerializer(order).data, status=status.HTTP_201_CREATED)
 

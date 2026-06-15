@@ -31,6 +31,7 @@ class OrderSerializer(serializers.ModelSerializer):
             "status",
             "order_link",
             "order_id",
+            "order_token",
         ]
 
     def create(self, validated_data):
