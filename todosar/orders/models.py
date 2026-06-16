@@ -17,7 +17,7 @@ class Order(TimeStampedModel):
     status = models.CharField(
         choices=Status.choices, max_length=10, default=Status.CREATED
     )
-    order_link = models.CharField(max_length=200, null=True)
+    order_link = models.URLField(max_length=200, null=True, blank=True)
     order_id = models.CharField(max_length=15, null=True, blank=True)
     order_token = models.CharField(max_length=100, null=True, blank=True)
 
