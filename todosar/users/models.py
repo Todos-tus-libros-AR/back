@@ -23,6 +23,9 @@ class UserAddress(TimeStampedModel):
         "utils.Country", on_delete=models.SET_NULL, null=True, related_name="addresses"
     )
     main = models.BooleanField(default=False)
+    
+    latitude = models.FloatField(null=True, blank=True)
+    longitude = models.FloatField(null=True, blank=True)
 
     def __str__(self):
         return f"{self.street}, {self.number}, {self.door}, {self.city}, {self.state}, {self.postal_code}, {self.country}"

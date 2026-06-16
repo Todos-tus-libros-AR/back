@@ -51,6 +51,8 @@ class UserAddressSerializer(serializers.ModelSerializer):
             "state_id",     # Entrada
             "country_id",   # Entrada
             "main",
+            "latitude",
+            "longitude",
         ]
 
     def create(self, validated_data):
