@@ -5,15 +5,21 @@ from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 from .utils import generate_code
-from .choices import DiscountType
+from .choices import DiscountType, Status
 
 
 class Order(TimeStampedModel):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="orders"
     )
-    book_store_id = models.IntegerField()
-    total = models.DecimalField(max_digits=12, decimal_places=2)
+    book_store = models.CharField(max_length=30)
+    total_amount = models.DecimalField(max_digits=12, decimal_places=2)
+    status = models.CharField(
+        choices=Status.choices, max_length=10, default=Status.CREATED
+    )
+    order_link = models.URLField(max_length=200, null=True, blank=True)
+    order_id = models.CharField(max_length=15, null=True, blank=True)
+    order_token = models.CharField(max_length=100, null=True, blank=True)
 
 
 class OrderItem(TimeStampedModel):

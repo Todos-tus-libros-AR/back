@@ -4,6 +4,9 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from drf_spectacular.utils import extend_schema
 from django.db.models import Q, F
+from django.utils import timezone
+from django.conf import settings
+import requests
 
 from ..models import Discount
 
@@ -19,9 +22,45 @@ class OrderCreateView(APIView):
 
     def post(self, request):
         serializer = OrderSerializer(data=request.data)
+
         if serializer.is_valid():
-            serializer.save(user=request.user)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            validated_data = serializer.validated_data
+            items = validated_data.get("items", [])
+
+            payload = {
+                "nombre": request.user.first_name,
+                "apellido": request.user.last_name,
+                "email": request.user.email,
+                "libreria": validated_data["book_store"],
+                "descuento": 0,
+                "productos": [
+                    {"ean": item["ean"], "cantidad": item["quantity"]} for item in items
+                ],
+            }
+
+            try:
+                response = requests.post(
+                    "https://apiultragestion.com.ar/api/external/generar-orden/",
+                    headers={"Authorization": f"Token {settings.API_ULTRA_TOKEN}"},
+                    json=payload,
+                )
+                if response.status_code not in [200, 201]:
+                    return Response(response.json(), status=status.HTTP_400_BAD_REQUEST)
+            except Exception:
+                return Response(
+                    {"error": "Failed to connect to the external system"},
+                    status=status.HTTP_502_BAD_GATEWAY,
+                )
+
+            external_data = response.json()
+            order = serializer.save(
+                user=request.user,
+                order_link=external_data.get("order_link"),
+                order_id=str(external_data.get("order_id")),
+                order_token=str(external_data.get("order_token")),
+            )
+            return Response(OrderSerializer(order).data, status=status.HTTP_201_CREATED)
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -32,8 +71,10 @@ class DiscountListView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        discounts = Discount.objects.filter(Q(user=request.user) | Q(user=None)).filter(
-            current_uses__lt=F("max_uses")
+        discounts = (
+            Discount.objects.filter(Q(user=request.user) | Q(user=None))
+            .filter(current_uses__lt=F("max_uses"))
+            .filter(Q(expiration__gt=timezone.now()) | Q(expiration=None))
         )
         serializer = DiscountSerializer(discounts, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
