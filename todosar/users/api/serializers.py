@@ -28,11 +28,9 @@ class UserCreationSerializer(serializers.ModelSerializer):
 
 
 class UserAddressSerializer(serializers.ModelSerializer):
-    city = CitySerializer(read_only=True)
     state = StateSerializer(read_only=True)
     country = CountrySerializer(read_only=True)
 
-    city_id = serializers.IntegerField(write_only=True)
     state_id = serializers.IntegerField(write_only=True)
     country_id = serializers.IntegerField(write_only=True)
 
@@ -47,10 +45,11 @@ class UserAddressSerializer(serializers.ModelSerializer):
             "city",         # Salida
             "state",        # Salida
             "country",      # Salida
-            "city_id",      # Entrada
             "state_id",     # Entrada
             "country_id",   # Entrada
             "main",
+            "latitude",
+            "longitude",
         ]
 
     def create(self, validated_data):

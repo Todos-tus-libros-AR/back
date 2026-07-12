@@ -13,9 +13,7 @@ class UserAddress(TimeStampedModel):
     number = models.CharField(max_length=20)
     door = models.CharField(max_length=25, blank=True)
     postal_code = models.CharField(max_length=20)
-    city = models.ForeignKey(
-        "utils.City", on_delete=models.SET_NULL, null=True, related_name="addresses"
-    )
+    city = models.CharField(max_length=100)
     state = models.ForeignKey(
         "utils.State", on_delete=models.SET_NULL, null=True, related_name="addresses"
     )
@@ -23,6 +21,9 @@ class UserAddress(TimeStampedModel):
         "utils.Country", on_delete=models.SET_NULL, null=True, related_name="addresses"
     )
     main = models.BooleanField(default=False)
+    
+    latitude = models.FloatField(null=True, blank=True)
+    longitude = models.FloatField(null=True, blank=True)
 
     def __str__(self):
         return f"{self.street}, {self.number}, {self.door}, {self.city}, {self.state}, {self.postal_code}, {self.country}"
