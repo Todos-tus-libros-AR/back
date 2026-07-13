@@ -32,7 +32,7 @@ CORS_ALLOWED_ORIGINS = [
     "https://dev.todostuslibrosar.com.ar",
 ]
 
-CSRF_COOKIE_DOMAIN = (".todostuslibrosar.com.ar",)
+CSRF_COOKIE_DOMAIN = ".todostuslibrosar.com.ar"
 
 SESSION_COOKIE_SAMESITE = "None"
 SESSION_COOKIE_SECURE = True
