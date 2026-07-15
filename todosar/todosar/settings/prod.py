@@ -17,6 +17,8 @@ DEBUG = True
 ALLOWED_HOSTS = [
     "api.todostuslibrosar.com.ar",
     "dev.todostuslibrosar.com.ar",
+    "localhost",  # only for testing purposes, remove in production
+    "127.0.0.1",  # only for testing purposes, remove in production
 ]
 
 CSRF_TRUSTED_ORIGINS = [
