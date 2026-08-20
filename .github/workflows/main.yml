@@ -1,4 +1,4 @@
-name: Deploy Todos tus libros Docker
+name: Deploy Todos tus libros Docker Backend
 on:
   push:
     tags:
@@ -23,8 +23,8 @@ jobs:
         run: echo "REPO=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
 
       - name: Build image
-        working-directory: ./frontend
-        run: docker build --build-arg VITE_ULTRA_TOKEN="${{ secrets.VITE_ULTRA_TOKEN }}" -t ghcr.io/$REPO:latest .
+        working-directory: ./todosar
+        run: docker build -t ghcr.io/$REPO:latest .
 
       - name: Push image
         run: |
