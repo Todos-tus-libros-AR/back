@@ -17,14 +17,14 @@ DEBUG = True
 ALLOWED_HOSTS = [
     "api.todostuslibrosar.com.ar",
     "dev.todostuslibrosar.com.ar",
-    "localhost",  # only for testing purposes, remove in production
-    "127.0.0.1",  # only for testing purposes, remove in production
+    "api.ttlar.com.ar",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "https://api.todostuslibrosar.com.ar",
     "https://todos.apiultragestion.com.ar",
     "https://dev.todostuslibrosar.com.ar",
+    "https://api.ttlar.com.ar/",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
