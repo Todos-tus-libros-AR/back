@@ -24,8 +24,12 @@ jobs:
 
       - name: Build image
         working-directory: ./todosar
-        run: docker build -t ghcr.io/$REPO:latest .
+        run: docker build \
+          -t ghcr.io/$REPO:latest \
+          -t ghcr.io/$REPO:${{ github.ref_name }} \
+          .
 
       - name: Push image
-        run: |
+        run:  |
           docker push ghcr.io/$REPO:latest
+          docker push ghcr.io/$REPO:${{ github.ref_name }}
