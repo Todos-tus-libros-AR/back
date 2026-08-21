@@ -12,29 +12,29 @@ DATABASES = {
     }
 }
 
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
-    "api.todostuslibrosar.com.ar",
-    "todostuslibrosar.com.ar",
+    "dev.todostuslibrosar.com.ar",
+    "api.ttlar.com.ar",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://api.todostuslibrosar.com.ar",
-    "https://todostuslibrosar.com.ar",
+    "https://dev.todostuslibrosar.com.ar",
+    "https://api.ttlar.com.ar/",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [
-    "https://api.todostuslibrosar.com.ar",
-    "https://todostuslibrosar.com.ar",
+    "https://api.ttlar.com.ar",
+    "https://dev.todostuslibrosar.com.ar",
 ]
 
-CSRF_COOKIE_DOMAIN = ".todostuslibrosar.com.ar"
+CSRF_COOKIE_DOMAIN = ".ttlar.com.ar"
 
 SESSION_COOKIE_SAMESITE = "None"
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SAMESITE = "None"
 CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_DOMAIN = ".todostuslibrosar.com.ar"
+SESSION_COOKIE_DOMAIN = ".ttlar.com.ar"
