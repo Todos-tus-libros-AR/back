@@ -18,11 +18,13 @@ DEBUG = True
 ALLOWED_HOSTS = [
     "dev.todostuslibrosar.com.ar",
     "api.ttlar.com.ar",
+    "test.ttlar.com.ar",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "https://dev.todostuslibrosar.com.ar",
     "https://api.ttlar.com.ar",
+    "https://test.ttlar.com.ar",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
