@@ -28,6 +28,7 @@ CSRF_TRUSTED_ORIGINS = [
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [
+    "https://test.ttlar.com.ar",
     "https://api.ttlar.com.ar",
     "https://dev.todostuslibrosar.com.ar",
 ]
