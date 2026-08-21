@@ -1,5 +1,6 @@
-from .base import *  # noqa: F403
 import os
+
+from .base import *  # noqa: F403
 
 DATABASES = {
     "default": {
@@ -21,7 +22,7 @@ ALLOWED_HOSTS = [
 
 CSRF_TRUSTED_ORIGINS = [
     "https://dev.todostuslibrosar.com.ar",
-    "https://api.ttlar.com.ar/",
+    "https://api.ttlar.com.ar",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
