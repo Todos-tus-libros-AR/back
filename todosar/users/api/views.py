@@ -1,16 +1,16 @@
 from django.contrib.auth import authenticate, login
 from drf_spectacular.utils import extend_schema
-from rest_framework.decorators import APIView, api_view, permission_classes
-from rest_framework.permissions import AllowAny
-from rest_framework.response import Response
 from rest_framework import status, viewsets
-from utils.models import GeneralConfiguration
+from rest_framework.decorators import APIView, api_view, permission_classes
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.response import Response
 
 from utils.email import Emailing
+from utils.models import GeneralConfiguration
 
 from ..models import UserAddress
-
 from .serializers import UserAddressSerializer, UserCreationSerializer, UserSerializer
+
 
 @api_view(["POST"])
 @permission_classes([AllowAny])
@@ -40,10 +40,10 @@ class UserAccessAPIView(APIView):
         if serializer.is_valid():
             user = serializer.save()
             emailing = Emailing()
-            emailing.send_bienvenida(user.email) 
-            
+            emailing.send_bienvenida(user.email)
+
             general_config = GeneralConfiguration.load()
-            
+
             if getattr(general_config, "send_new_users_discount_email", False):
                 emailing.send_discount_for_new_users(user.email, user)
             return Response(
@@ -58,6 +58,8 @@ class UserAccessAPIView(APIView):
     responses={200: UserSerializer},
 )
 class UserMeAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
     def get(self, request):
         user = request.user
         serializer = UserSerializer(user)
@@ -73,6 +75,7 @@ class UserMeAPIView(APIView):
 
 
 class UserAddressAPIView(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated]
     serializer_class = UserAddressSerializer
     queryset = UserAddress.objects.all()
 
