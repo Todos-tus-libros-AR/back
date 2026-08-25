@@ -4,16 +4,15 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('users', '0002_useraddress_latitude_useraddress_longitude'),
+        ("users", "0002_useraddress_latitude_useraddress_longitude"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='useraddress',
-            name='city',
-            field=models.CharField(default='', max_length=100),
+            model_name="useraddress",
+            name="city",
+            field=models.CharField(default="", max_length=100),
             preserve_default=False,
         ),
     ]
