@@ -42,3 +42,6 @@ SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SAMESITE = "None"
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_DOMAIN = ".ttlar.com.ar"
+
+STATIC_URL = "static/"
+STATIC_ROOT = "/var/www/apitodosar/static"
