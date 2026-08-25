@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_extensions",
     "drf_spectacular",
+    "django_rest_passwordreset",
     "utils",
     "users",
     "orders",
