@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "django_extensions",
     "drf_spectacular",
     "django_rest_passwordreset",
+    "rest_framework",
     "utils",
     "users",
     "orders",

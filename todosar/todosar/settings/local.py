@@ -21,3 +21,5 @@ CSRF_TRUSTED_ORIGINS = [
 
 STATIC_URL = "static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")  # noqa: F405, RUF100
+
+FRONTEND_URL = "http://localhost:5173"
