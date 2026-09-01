@@ -19,4 +19,8 @@ CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5173",
 ]
 
+STATIC_URL = "static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")  # noqa: F405, RUF100
+
+
 FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:5173")

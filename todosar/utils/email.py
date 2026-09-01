@@ -1,14 +1,18 @@
+import logging
 import os
 import re
+
 import requests
-import logging
+from django.template.loader import render_to_string
 from jinja2 import Environment, FileSystemLoader
+
 from orders.choices import DiscountType
 from orders.models import Discount
 from users.models import User
 from utils.models import GeneralConfiguration
 
 logger = logging.getLogger(__name__)
+
 
 class Emailing:
     def __init__(self, from_email: str = None):
@@ -57,12 +61,14 @@ class Emailing:
 
     def send_discount_for_new_users(self, to: str, user: User):
         subject = "Preparate para el lanzamiento de Todos Tus LibrosAR"
-        
+
         general_config = GeneralConfiguration.load()
-        
-        discount_percentage = getattr(general_config, "new_users_discount_percentage")
+
+        discount_percentage = getattr(
+            general_config, "new_users_discount_percentage", 0
+        )
         fixed_discount_amount = getattr(
-            general_config, "new_users_fixed_discount_amount"
+            general_config, "new_users_fixed_discount_amount", 0
         )
         discount = Discount.objects.create(
             type=DiscountType.FIXED
@@ -76,9 +82,20 @@ class Emailing:
         self.send_email(
             to,
             subject,
-            "Por haberte suscrito a nuestro sitio  te ofrecemos un descuento exclusivo para tu primera compra. ¡No te lo pierdas! Código: {}".format(
-                discount.code
-            ),
+            f"Por haberte suscrito a nuestro sitio  te ofrecemos un descuento exclusivo para tu primera compra. ¡No te lo pierdas! Código: {discount.code}",
+        )
+
+    def regenerate_password_email(self, context: dict):
+        # render email text
+        email_html_message = render_to_string(
+            "emails/user_reset_password.html", context
+        )
+        # email_plaintext_message = render_to_string('user_reset_password.txt', context)
+
+        self.send_email(
+            to=context.get("email"),
+            subject="Todos tus libros AR: Resetea tu contraseña",
+            body=email_html_message,
         )
 
     def send_password_reset(self, to: str, reset_link: str):

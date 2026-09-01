@@ -40,3 +40,6 @@ CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_DOMAIN = ".todostuslibrosar.com.ar"
 
 FRONTEND_URL = "https://todostuslibrosar.com.ar"
+
+STATIC_URL = "static/"
+STATIC_ROOT = "/var/www/apitodosar/static"

@@ -39,11 +39,13 @@ CORS_ALLOWED_ORIGINS = [
     "https://dev.todostuslibrosar.com.ar",
 ]
 
-CSRF_COOKIE_DOMAIN = None
-SESSION_COOKIE_DOMAIN = None
+CSRF_COOKIE_DOMAIN = ".ttlar.com.ar"
 
-SESSION_COOKIE_SECURE = False
-CSRF_COOKIE_SECURE = False
+SESSION_COOKIE_SAMESITE = "None"
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = "None"
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_DOMAIN = ".ttlar.com.ar"
 
-SESSION_COOKIE_SAMESITE = "Lax"
-CSRF_COOKIE_SAMESITE = "Lax"
+STATIC_URL = "static/"
+STATIC_ROOT = "/var/www/apitodosar/static"
