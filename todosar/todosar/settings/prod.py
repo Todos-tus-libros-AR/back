@@ -38,3 +38,5 @@ SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SAMESITE = "None"
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_DOMAIN = ".todostuslibrosar.com.ar"
+
+FRONTEND_URL = "https://todostuslibrosar.com.ar"

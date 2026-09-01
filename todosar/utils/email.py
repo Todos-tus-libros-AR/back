@@ -14,7 +14,7 @@ class Emailing:
     def __init__(self, from_email: str = None):
         self.from_email = (
             from_email
-            or "Daniel de Todos tus librosAR <martina@todostuslibrosar.com.ar>"
+            or "Todos tus Libros AR <soporte@todostuslibrosar.com.ar>"
         )
         self.token = os.getenv("TOKEN_EMAIL")
         self.templates_dir = os.path.join(
@@ -80,3 +80,8 @@ class Emailing:
                 discount.code
             ),
         )
+
+    def send_password_reset(self, to: str, reset_link: str):
+        subject = "Regeneración de contraseña - Todos Tus LibrosAR"
+        body = self.render_template("password_reset.html", {"reset_link": reset_link})
+        self.send_email(to, subject, body)

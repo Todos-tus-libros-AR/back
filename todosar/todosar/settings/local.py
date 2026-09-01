@@ -18,3 +18,5 @@ CORS_ALLOW_ALL_ORIGINS = True
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5173",
 ]
+
+FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:5173")
