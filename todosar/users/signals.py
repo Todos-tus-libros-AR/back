@@ -1,5 +1,5 @@
+from django.conf import settings
 from django.dispatch import receiver
-from django.urls import reverse
 from django_rest_passwordreset.signals import reset_password_token_created
 
 from utils.email import Emailing
@@ -25,9 +25,7 @@ def password_reset_token_created(
         "username": reset_password_token.user.username,
         "email": reset_password_token.user.email,
         "reset_password_url": "{}?token={}".format(
-            instance.request.build_absolute_uri(
-                reverse("password_reset:reset-password-confirm")
-            ),
+            f"{settings.FRONTEND_URL}/recuperar-password",
             reset_password_token.key,
         ),
     }

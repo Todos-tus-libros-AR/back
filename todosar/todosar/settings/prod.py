@@ -41,3 +41,5 @@ SESSION_COOKIE_DOMAIN = ".todostuslibrosar.com.ar"
 
 STATIC_URL = "static/"
 STATIC_ROOT = "/var/www/apitodosar/static"
+
+FRONTEND_URL = "https://todostuslibrosar.com.ar"
