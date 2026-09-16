@@ -126,4 +126,4 @@ REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
-BASE_URL = "http://localhost:8000"
+FRONTEND_URL = "http://localhost:8000"
