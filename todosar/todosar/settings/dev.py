@@ -45,3 +45,5 @@ SESSION_COOKIE_DOMAIN = ".ttlar.com.ar"
 
 STATIC_URL = "static/"
 STATIC_ROOT = "/var/www/apitodosar/static"
+
+BASE_URL = "https://test.ttlar.com.ar/"

@@ -12,7 +12,7 @@ DATABASES = {
     }
 }
 
-DEBUG = False
+DEBUG = os.getenv("DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = [
     "api.todostuslibrosar.com.ar",

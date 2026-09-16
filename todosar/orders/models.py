@@ -1,11 +1,11 @@
-from django.db import models
-from django_extensions.db.models import TimeStampedModel
 from django.conf import settings
 from django.core.exceptions import ValidationError
-from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.validators import MaxValueValidator, MinValueValidator
+from django.db import models
+from django_extensions.db.models import TimeStampedModel
 
-from .utils import generate_code
 from .choices import DiscountType, Status
+from .utils import generate_code
 
 
 class Order(TimeStampedModel):
