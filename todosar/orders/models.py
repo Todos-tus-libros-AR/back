@@ -71,3 +71,14 @@ class Discount(TimeStampedModel):
         if not self.code:
             self.code = generate_code()
         super().save(*args, **kwargs)
+
+
+class TNCallback(TimeStampedModel):
+    store_id = models.CharField(max_length=15)
+    item_id = models.CharField(max_length=155)
+    topic = models.CharField(max_length=100)
+    content = models.JSONField(default=dict, blank=True, null=True)
+    processed = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.topic} - {self.created} - {self.item_id}"

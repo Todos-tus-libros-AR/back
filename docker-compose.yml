@@ -8,6 +8,27 @@ services:
       - postgres_data:/var/lib/postgresql/
     ports:
       - "5437:5432"
+    networks:
+      - todosar
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: todosar-rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASS}
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    ports:
+      - "${RABBIT_PORT}:${RABBIT_PORT_INTER}"  # Puerto de comunicación con Celery
+      - "${RABBIT_PORT_EXT}:15672"  # Interfaz de administración web
+    env_file:
+      - .env
+    networks:
+      - todosar
 
   back:
     container_name: todosar-back
@@ -23,18 +44,46 @@ services:
       - db
     env_file:
       - .env
+    networks:
+      - todosar
 
 
-  # celery:  back:
-    # build:
-    #   context: ./todosar
-    #   dockerfile: Dockerfile
-  #   build: .
-  #   command: celery -A django_app worker --loglevel=info
-  #   volumes:
-  #     - .:/app
-  #   depends_on:
-  #     - db
+  celery:
+    build:
+      context: ./todosar
+    container_name: celery-todosar
+    command: celery -A todosar.celery worker --loglevel=info
+    volumes:
+      - ./todosar:/app
+    depends_on:
+      - db
+      - rabbitmq
+    env_file:
+      - .env
+    networks:
+      - todosar
+
+  celery-beat:
+    build:
+      context: ./todosar
+    container_name: celery-beat-todosar
+    command: celery -A todosar.celery beat --loglevel=info
+    volumes:
+      - ./todosar:/app
+    depends_on:
+      - db
+      - rabbitmq
+      - back
+      - celery
+    env_file:
+      - .env
+    networks:
+      - todosar
+
 
 volumes:
   postgres_data:
+
+networks:
+  todosar:
+    driver: bridge
