@@ -128,4 +128,4 @@ REST_FRAMEWORK = {
 
 FRONTEND_URL = "http://localhost:8000"
 
-CELERY_BROKER_URL = f"pyamqp://{os.getenv('RABBITMQ_USER')}:{os.getenv('RABBITMQ_PASS')}@rabbitmq:{os.getenv('RABBIT_PORT')}//"
+CELERY_BROKER_URL = f"pyamqp://{os.getenv('RABBITMQ_USER')}:{os.getenv('RABBITMQ_PASS')}@{os.getenv('RABBITMQ_HOST')}:{os.getenv('RABBIT_PORT')}//"
