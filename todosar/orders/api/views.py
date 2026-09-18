@@ -1,5 +1,5 @@
 from rest_framework.views import APIView
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import CreateAPIView, ListCreateAPIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework import status
@@ -12,17 +12,25 @@ import requests
 
 from orders.tasks import save_tn_callbacks
 
-from ..models import Discount
+from ..models import Discount, Order
 
-from .serializers import OrderSerializer, DiscountSerializer
+from .serializers import OrderSerializer, DiscountSerializer, OrderShortSerializer
 
 
 @extend_schema(
     request=OrderSerializer,
     responses={201: OrderSerializer},
 )
-class OrderCreateView(APIView):
+class OrderCreateView(ListCreateAPIView):
     permission_classes = [IsAuthenticated]
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+
+    def list(self, request):
+        queryset = self.get_queryset()
+        queryset = queryset.filter(user=request.user)
+        serializer = OrderShortSerializer(queryset, many=True)
+        return Response(serializer.data)
 
     def post(self, request):
         serializer = OrderSerializer(data=request.data)
