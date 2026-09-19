@@ -46,6 +46,20 @@ class OrderSerializer(serializers.ModelSerializer):
             return order
 
 
+class OrderShortSerializer(OrderSerializer):
+    class Meta:
+        model = Order
+        fields = [
+            "id",
+            "items",
+            "book_store",
+            "total_amount",
+            "status",
+            "order_link",
+            "order_id",
+        ]
+
+
 class DiscountSerializer(serializers.ModelSerializer):
     value = serializers.SerializerMethodField()
     left_uses = serializers.SerializerMethodField()

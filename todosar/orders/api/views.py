@@ -1,24 +1,36 @@
 from rest_framework.views import APIView
+from rest_framework.generics import CreateAPIView, ListCreateAPIView
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework import status
 from drf_spectacular.utils import extend_schema
 from django.db.models import Q, F
 from django.utils import timezone
 from django.conf import settings
+from django.http import HttpResponse
 import requests
 
-from ..models import Discount
+from orders.tasks import save_tn_callbacks
 
-from .serializers import OrderSerializer, DiscountSerializer
+from ..models import Discount, Order
+
+from .serializers import OrderSerializer, DiscountSerializer, OrderShortSerializer
 
 
 @extend_schema(
     request=OrderSerializer,
     responses={201: OrderSerializer},
 )
-class OrderCreateView(APIView):
+class OrderCreateView(ListCreateAPIView):
     permission_classes = [IsAuthenticated]
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+
+    def list(self, request):
+        queryset = self.get_queryset()
+        queryset = queryset.filter(user=request.user)
+        serializer = OrderShortSerializer(queryset, many=True)
+        return Response(serializer.data)
 
     def post(self, request):
         serializer = OrderSerializer(data=request.data)
@@ -78,3 +90,12 @@ class DiscountListView(APIView):
         )
         serializer = DiscountSerializer(discounts, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class TNCallbackView(CreateAPIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        save_tn_callbacks.delay(request.data)
+
+        return HttpResponse("ok", status=200)

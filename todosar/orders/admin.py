@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Order, OrderItem, Discount
+from .models import Order, OrderItem, Discount, TNCallback
 
 
 @admin.register(Order)
@@ -25,3 +25,8 @@ class OrderItemAdmin(admin.ModelAdmin):
 @admin.register(Discount)
 class DiscountAdmin(admin.ModelAdmin):
     list_display = ("code", "user", "type", "expiration")
+
+
+@admin.register(TNCallback)
+class TNCallback(admin.ModelAdmin):
+    list_display = ("topic", "created", "processed")
